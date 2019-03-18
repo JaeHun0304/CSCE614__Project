@@ -3,7 +3,7 @@ package tree
 
 import chisel3._
 
-class TreeClassification extends Module {
+class TREE extends Module {
 	val io = IO(new Bundle {
 		val in = Input(UInt(16.W))
 		val out = Output(UInt(16.W))
@@ -25,8 +25,4 @@ class TreeClassification extends Module {
 	when(regC < 50.U){io.out := 0.U}
 		.otherwise{io.out := 1.U}
 
-}
-
-object TreeClassification extends App {
-  chisel3.Driver.execute(args, () => new TreeClassification)
 }
