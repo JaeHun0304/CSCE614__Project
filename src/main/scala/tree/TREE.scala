@@ -9,9 +9,9 @@ class TREE extends Module {
 		val out = Output(UInt(16.W))
 	})
 
-	val regA = RegInit(UInt(16.W), 0.U)	//temporary results will be stored in registers
-	val regB = RegInit(UInt(16.W), 0.U)
-	val regC = RegInit(UInt(16.W), 0.U)
+	val regA = RegInit(0.U(16.W))	//temporary results will be stored in registers
+	val regB = RegInit(0.U(16.W))
+	val regC = RegInit(0.U(16.W))
 
 	when(io.in < 100.U){regA := io.in}	//classify input based on the generated tree
 		.otherwise{regB := io.in}
@@ -25,4 +25,8 @@ class TREE extends Module {
 	when(regC < 50.U){io.out := 0.U}
 		.otherwise{io.out := 1.U}
 
+}
+
+object TREE extends App {
+  chisel3.Driver.execute(args, () => new TREE)
 }
