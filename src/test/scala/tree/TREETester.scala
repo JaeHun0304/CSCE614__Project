@@ -1,8 +1,6 @@
 
 package tree
 
-import java.io.File
-
 import chisel3.iotesters
 import chisel3.iotesters.{PeekPokeTester}
 
