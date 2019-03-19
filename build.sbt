@@ -28,7 +28,7 @@ def javacOptionsVersion(scalaVersion: String): Seq[String] = {
 
 name := "CSCE614__Project"
 
-version := "3.1.1"
+version := "3.2-031419-SNAPSHOT"
 
 scalaVersion := "2.11.12"
 
