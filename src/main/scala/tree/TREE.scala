@@ -27,6 +27,6 @@ class TREE extends Module {
 
 }
 
-object TREE extends App {
-  chisel3.Driver.execute(args, () => new TREE)
-}
+// object TREEMain extends App {
+  // chisel3.Driver.execute(args, () => new TREE)
+// }
