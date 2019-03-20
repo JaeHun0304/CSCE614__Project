@@ -5,7 +5,11 @@ import chisel3._
 import chisel3.util._
 
 /**
-
+  Author:JaeHun Jung
+  Date: 03/20/2019
+  Single PE hardware module in Eyriss architecture
+  There are separate FIFO queues for storing the ALU input and output. 
+  Note that the queue interface in the Chisel is decoupled with the support of ready-valid mechanism.
   */
 class PE extends Module {
   val io = IO(new Bundle {
