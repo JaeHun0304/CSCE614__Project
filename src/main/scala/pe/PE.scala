@@ -8,7 +8,8 @@ import chisel3.util._
   Author:JaeHun Jung
   Date: 03/20/2019
   Single PE hardware module in Eyriss architecture
-  There are separate FIFO queues for storing the ALU input and output. 
+  There are separate FIFO queues for storing the ALU input and output.
+  ALU only target for the MAC(Multiplay and Accumulate) operation. 
   Note that the queue interface in the Chisel is decoupled with the support of ready-valid mechanism.
   */
 class PE extends Module {
