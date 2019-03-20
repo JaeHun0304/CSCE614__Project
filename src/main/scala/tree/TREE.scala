@@ -14,16 +14,15 @@ class TREE extends Module {
 	val regC = RegInit(0.U(16.W))
 
 	when(io.in < 100.U){regA := io.in}	//classify input based on the generated tree
-		.otherwise{regB := io.in}
+	.otherwise{regB := io.in}
 
 	when(regA < 80.U){regC := regA}
 		.otherwise{io.out := 2.U}
 
 	when(regB < 130.U){io.out := 3.U}
-		.otherwise{io.out := 4.U}
-
-	when(regC < 50.U){io.out := 0.U}
-		.otherwise{io.out := 1.U}
+	.elsewhen(regB > 130.U){io.out := 4.U}
+	.elsewhen(regC < 50.U){io.out := 0.U}
+    .otherwise{io.out := 1.U}
 
 }
 
