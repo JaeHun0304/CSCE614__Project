@@ -12,7 +12,7 @@ import chisel3._
 
 // There are 4 inputs and single output in this hardware class
 // sj1, sj2, sj3 are signal of neuron which indicates whether it is fired(1) or not(0)
-// reset signal is used to initialize the membrance potential function and three previous neuron signals
+// reset signal is used to initialize the membrane potential function and three previous neuron signals
 class LIF extends Module {  
 	val io = IO(new Bundle {
     val reset = Input(Bool())
