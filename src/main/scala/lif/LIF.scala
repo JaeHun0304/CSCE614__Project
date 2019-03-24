@@ -18,7 +18,7 @@ class LIF extends Module {
     val reset = Input(Bool())
     val sj1, sj2, sj3 = Input(UInt(1.W))
     val firing_out = Output(Bool())
-    val vi = Output(UInt(5.w))
+    val vi = Output(UInt(5.W))
   })
 
   val sj1_prev, sj2_prev, sj3_prev = RegInit(0.U(1.W))  // sj1_prev, sj2_prev, and sj3_prev registers save 1-bit Sj[t-1]
@@ -29,15 +29,15 @@ class LIF extends Module {
 // When reset is treu(1), initialize registers, note that vi is initialized into resting poetntial which is 6
   when(io.reset === 1.U){  
   	io.vi := 6.U
-  	vi_prev := vi      //Initialize Vi[t-1] with Vi[t] for t=0 case
+  	vi_prev := io.vi      //Initialize Vi[t-1] with Vi[t] for t=0 case
   	sj1_prev := io.sj1 //For the first input, initialize Sj[t-1] with input of Sj[t] for t=0 case
   	sj2_prev := io.sj2
   	sj3_prev := io.sj3
   }.otherwise{ 
     // perform LIF computation if reset flag is not set
-  	vi := vi_prev + (sj1_prev + 2.U * sj2_prev + 3.U * sj3_prev) - 1.U
+  	io.vi := vi_prev + (sj1_prev + 2.U * sj2_prev + 3.U * sj3_prev) - 1.U
   	// When Vi[t] memebrane potential exceeds threshold, set firing_out flag and reset Vi[t] to resting potential.
-  	when(vi >= 14.U){
+  	when(io.vi >= 14.U){
   		io.firing_out := 1.U
   		io.vi := 6.U
   	}
