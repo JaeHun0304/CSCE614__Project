@@ -40,7 +40,7 @@ class LIF extends Module {
   	vi_temp := vi_prev + (sj1_prev + 2.U * sj2_prev + 3.U * sj3_prev) - 1.U
   	// When Vi[t] memebrane potential exceeds threshold, set firing_out flag and reset Vi[t] to resting potential.
   	io.vi := vi_temp
-    when(vi_temp >= 14.U){
+    when(vi_temp >= 14.U && vi_temp != 31.U){
   		io.firing_out := 1.U
   		io.vi := 6.U
   	}
