@@ -23,10 +23,10 @@ class LIF extends Module {
 
   val sj1_prev, sj2_prev, sj3_prev = RegInit(0.U(1.W))  // sj1_prev, sj2_prev, and sj3_prev registers save 1-bit Sj[t-1]
   val vi_prev = RegInit(0.U(5.W)) // vi and vi_prev registers save membrane potential at t and at (t-1) respectively
-  val vi_temp = Wire(UInt(5.W))
+  val vi_temp = Wire(UInt(5.W)) // Temporary wiring signal for determining whether reset or not the Vi potential
 
   io.firing_out := 0.U   //initialize firing output waveform to zero
-  vi_temp := 0.U
+  vi_temp := 0.U  //Initialize wiring signal.
 
 // When reset is treu(1), initialize registers, note that vi is initialized into resting poetntial which is 6
   when(io.reset === 1.U){  
@@ -38,8 +38,11 @@ class LIF extends Module {
   }.otherwise{ 
     // perform LIF computation if reset flag is not set
   	vi_temp := vi_prev + (sj1_prev + 2.U * sj2_prev + 3.U * sj3_prev) - 1.U
-  	// When Vi[t] memebrane potential exceeds threshold, set firing_out flag and reset Vi[t] to resting potential.
+  	// When output wire signal of vi_temp memebrane potential exceeds threshold, set firing_out flag and reset Vi[t] to resting potential.
+    // Otherwise, final vi output will be same with vi_temp signal value
   	io.vi := vi_temp
+    // vi_temp will be '31' since equation "vi_temp := vi_prev + (sj1_prev + 2.U * sj2_prev + 3.U * sj3_prev) - 1.U" will be '-1' when 
+    // all the variables are zero which makes vi_temp '31' since it is unsigned int data type. Therfore, the vi_temp should not be '31'
     when(vi_temp >= 14.U && vi_temp != 31.U){
   		io.firing_out := 1.U
   		io.vi := 6.U
