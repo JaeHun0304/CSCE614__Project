@@ -7,28 +7,63 @@ import chisel3.iotesters.{PeekPokeTester}
 import scala.util.Random
 
 
-
+/*
+  Author:JaeHun Jung
+  Date: 04/28/2019
+  Test code for the PE.scala file. There are two cases in the test. First test has input
+  PSUM(Partial SUM) and the other test does not have PSUM. The addition of input PSUM from
+  other PE only activated when there is a data in the PSUM input queue.
+*/
 
 class PEUnitTester(c: PE) extends PeekPokeTester(c) {
 
-  
-  for (i <- 0 until 20) {
   	// Randomly generate input data
-    val random_data1 = Random.nextInt(65536)
-  	val random_data2 = Random.nextInt(65536)
-  	val random_data3 = Random.nextInt(65536)
+    val random_data1 = Random.nextInt(50)
+  	val random_data2 = Random.nextInt(50)
+  	val random_data3 = Random.nextInt(50)
+    val random_data4 = Random.nextInt(50)
+    val random_data5 = Random.nextInt(50)
+    val random_data6 = Random.nextInt(50)
   	//  poke random data into the inputs
-  	poke(c.io.pixel_in.data, random_data1)
-  	poke(c.io.filter_in.data, random_data2)
-  	poke(c.io.psum_in.data, random_data3)
 
-    poke(pixel_queue.valid, (i>>0)%2)
-    poke(filter_queue.valid,  (i>>0)%2)
-    poke(mul_result.ready,  (i>>0)%2)
+    poke(c.io.pixel_in.valid, 1)
+    poke(c.io.pixel_in.bits, random_data1)
+    poke(c.io.filter_in.valid, 1)
+    poke(c.io.filter_in.bits, random_data2)
+    poke(c.io.psum_in.valid, 1)
+    poke(c.io.psum_in.bits, random_data3)
     step(1)
 
-    poke(mul_result.valid, (i>>0)%2)
-    poke(psum_out.ready, (i>>0)%2)
+    poke(c.io.psum_in.bits, 0)
+    poke(c.io.pixel_in.valid, 1)
+    poke(c.io.pixel_in.bits, random_data4)
+    poke(c.io.filter_in.valid, 1)
+    poke(c.io.filter_in.bits, random_data5)
+    step(2)
 
-  }
+}
+
+class PEUnitTester2(c: PE) extends PeekPokeTester(c) {
+
+    // Randomly generate input data
+    val random_data1 = Random.nextInt(50)
+    val random_data2 = Random.nextInt(50)
+    val random_data3 = Random.nextInt(50)
+    val random_data4 = Random.nextInt(50)
+    val random_data5 = Random.nextInt(50)
+    val random_data6 = Random.nextInt(50)
+    //  poke random data into the inputs
+
+    poke(c.io.pixel_in.valid, 1)
+    poke(c.io.pixel_in.bits, random_data1)
+    poke(c.io.filter_in.valid, 1)
+    poke(c.io.filter_in.bits, random_data2)
+    step(1)
+
+    poke(c.io.pixel_in.valid, 1)
+    poke(c.io.pixel_in.bits, random_data3)
+    poke(c.io.filter_in.valid, 1)
+    poke(c.io.filter_in.bits, random_data4)
+    step(2)
+
 }
