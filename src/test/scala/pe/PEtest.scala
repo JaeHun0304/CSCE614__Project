@@ -15,6 +15,7 @@ import scala.util.Random
   other PE only activated when there is a data in the PSUM input queue.
 */
 
+// Test case when incoming PSUM data is existed
 class PEUnitTester(c: PE) extends PeekPokeTester(c) {
 
   	// Randomly generate input data
@@ -24,8 +25,8 @@ class PEUnitTester(c: PE) extends PeekPokeTester(c) {
     val random_data4 = Random.nextInt(50)
     val random_data5 = Random.nextInt(50)
     val random_data6 = Random.nextInt(50)
-  	//  poke random data into the inputs
-
+  	
+    //  poke random generated data into ifmap, filter, and incoming PSUM
     poke(c.io.pixel_in.valid, 1)
     poke(c.io.pixel_in.bits, random_data1)
     poke(c.io.filter_in.valid, 1)
@@ -43,16 +44,17 @@ class PEUnitTester(c: PE) extends PeekPokeTester(c) {
 
 }
 
+// Same mechanism but case when no incoming PSUM data
 class PEUnitTester2(c: PE) extends PeekPokeTester(c) {
 
-    // Randomly generate input data
+    
     val random_data1 = Random.nextInt(50)
     val random_data2 = Random.nextInt(50)
     val random_data3 = Random.nextInt(50)
     val random_data4 = Random.nextInt(50)
     val random_data5 = Random.nextInt(50)
     val random_data6 = Random.nextInt(50)
-    //  poke random data into the inputs
+    
 
     poke(c.io.pixel_in.valid, 1)
     poke(c.io.pixel_in.bits, random_data1)
