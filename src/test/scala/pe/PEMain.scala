@@ -23,7 +23,7 @@ import chisel3._
   * }}}
   */
 object PEMain extends App {
-  iotesters.Driver.execute(args, ("--backend-name", "verilator") => new PE) {
+  iotesters.Driver.execute(Array("--backend-name", "verilator"), () => new PE) {
     c => new PEUnitTester(c)
   }
 }

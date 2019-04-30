@@ -14,22 +14,29 @@ import chisel3.util._
   */
 class PE extends Module {
   val io = IO(new Bundle {
-    val pixel_in = Flipped(Decoupled(UInt(16.W)))
-    val filter_in = Flipped(Decoupled(UInt(16.W)))
-    val psum_in = Flipped(Decoupled(UInt(16.W))) //valid and bits are inputs
-    val psum_out = Decoupled(UInt(16.W))  // Decoupled() valid and bits are outputs
+    val pixel_in = Input(UInt(16.W))
+    val filter_in = Input(UInt(16.W))
+    val psum_in = Decoupled(UInt(16.W)) //valid and bits are inputs
     val output = Output(UInt(16.W))
   })
-
+  
+  val psum_out = Decoupled(UInt(16.W))
   val pixel_queue = Queue(io.pixel_in, 12)
   val filter_queue = Queue(io.filter_in, 225)
-  val psum_queue = Queue(io.psum_out, 24)
+  val psum_queue = Queue(psum_out, 24)
   val mul_result = Decoupled(UInt(16.W))
-
 
   pixel_queue.nodeq()
   filter_queue.nodeq()
   psum_queue.nodeq()
+
+  when(pixel_queue.ready){
+    pixel_queue.enq(pixel_in)
+  }
+  .elsewhen(filter_queue.ready){
+    filter_queue.enq(filter_in)
+  }
+  .elsewhen()
 
   when(pixel_queue.valid && filter_queue.valid && mul_result.ready){
     mul_result.bits := pixel_queue.deq() * filter_queue.deq()
