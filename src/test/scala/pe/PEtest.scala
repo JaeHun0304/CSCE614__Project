@@ -2,38 +2,31 @@ package lif
 
 import chisel3.iotesters
 import chisel3.iotesters.{PeekPokeTester}
-import scala.collection.mutable.ListBuffer
+import scala.util.Random
+
 
 
 
 class PEUnitTester(c: PE) extends PeekPokeTester(c) {
 
-// Initialize three ListBuffer for storing 3 neruons presynaptic spike sequences.
-	var test_case1_sj1 = new ListBuffer[Int]()
-	var test_case1_sj2 = new ListBuffer[Int]()
-	var test_case1_sj3 = new ListBuffer[Int]()
+  
+  for (i <- 0 until 8) {
+  	// Randomly generate input data
+    val random_data1 = Random.nextInt(65536)
+  	val random_data2 = Random.nextInt(65536)
+  	val random_data3 = Random.nextInt(65536)
+  	//  poke random data into the inputs
+  	poke(c.io.pixel_in.data, random_data1)
+  	poke(c.io.filter_in.data, random_data2)
+  	poke(c.io.psum_in.data, random_data3)
 
-// Push necessary sequence value to the Lists.
-	for(i <- 1 to 5){	
-		test_case1_sj1 ++= List[Int](1,1,1,1,1,0,0)
-		test_case1_sj2 ++= List[Int](1,1,1,1,1,0,0)
-		test_case1_sj3 ++= List[Int](1,1,1,1,1,0,0)
-	}
+    poke(c.io.pixel_queue.valid, (i>>0)%2)
+    poke(c.io.filter_queue.valid,  (i>>0)%2)
+    poke(c.io.mul_result.ready,  (i>>0)%2)
+    step(1)
 
-// iterate over the element of the spike sequences to poke necessary Sj[t] inputs to the LIF class.
-	for(i <- 0 until test_case1_sj1.length){
-		if(i == 0){
-			poke(c.io.sj1, test_case1_sj1(i))
-			poke(c.io.sj2, test_case1_sj2(i))
-			poke(c.io.sj3, test_case1_sj3(i))
-			poke(c.io.reset, 1)
-			step(1)   //wait for 1 clock cycle for the register update based on the poked inputs
-			poke(c.io.reset, 0)
-		}
-		else{
-			poke(c.io.sj1, test_case1_sj1(i))
-			poke(c.io.sj2, test_case1_sj2(i))
-			poke(c.io.sj3, test_case1_sj3(i))
-			step(1)}	//wait for 1 clock cyle for the register update
-	}
+    poke(c.io.mul_result.valid, (i>>0)%2)
+    poke(c.io.psum_out.ready, (i>>0)%2)
+
+  }
 }
