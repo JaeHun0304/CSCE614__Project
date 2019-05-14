@@ -24,7 +24,6 @@ class PEUnitTester(c: PE) extends PeekPokeTester(c) {
   	val random_data3 = Random.nextInt(50)
     val random_data4 = Random.nextInt(50)
     val random_data5 = Random.nextInt(50)
-    val random_data6 = Random.nextInt(50)
   	
     //  poke random generated data into ifmap, filter, and incoming PSUM
 
@@ -56,7 +55,6 @@ class PEUnitTester2(c: PE) extends PeekPokeTester(c) {
     val random_data3 = Random.nextInt(50)
     val random_data4 = Random.nextInt(50)
     val random_data5 = Random.nextInt(50)
-    val random_data6 = Random.nextInt(50)
     
     poke(c.io.reset_accumulation, 1)
     poke(c.io.accumulate_input, 1)
