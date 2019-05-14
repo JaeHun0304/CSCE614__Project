@@ -27,6 +27,9 @@ class PEUnitTester(c: PE) extends PeekPokeTester(c) {
     val random_data6 = Random.nextInt(50)
   	
     //  poke random generated data into ifmap, filter, and incoming PSUM
+
+    poke(c.io.reset_accumulation, 0)
+    poke(c.io.accumulate_input, 1)
     poke(c.io.pixel_in.valid, 1)
     poke(c.io.pixel_in.bits, random_data1)
     poke(c.io.filter_in.valid, 1)
@@ -40,7 +43,7 @@ class PEUnitTester(c: PE) extends PeekPokeTester(c) {
     poke(c.io.pixel_in.bits, random_data4)
     poke(c.io.filter_in.valid, 1)
     poke(c.io.filter_in.bits, random_data5)
-    step(2)
+    step(10)
 
 }
 
@@ -55,13 +58,15 @@ class PEUnitTester2(c: PE) extends PeekPokeTester(c) {
     val random_data5 = Random.nextInt(50)
     val random_data6 = Random.nextInt(50)
     
-
+    poke(c.io.reset_accumulation, 1)
+    poke(c.io.accumulate_input, 1)
     poke(c.io.pixel_in.valid, 1)
     poke(c.io.pixel_in.bits, random_data1)
     poke(c.io.filter_in.valid, 1)
     poke(c.io.filter_in.bits, random_data2)
     step(1)
 
+    poke(c.io.accumulate_input, true)
     poke(c.io.pixel_in.valid, 1)
     poke(c.io.pixel_in.bits, random_data3)
     poke(c.io.filter_in.valid, 1)

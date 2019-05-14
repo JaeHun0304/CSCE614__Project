@@ -24,13 +24,13 @@ import chisel3._
   --full-stacktrace if you wish to see the full stack trace
   */
 object PEMain extends App {
-  iotesters.Driver.execute(Array("--backend-name", "verilator"), () => new PE) {
+  iotesters.Driver.execute(Array("--no-check-comb-loops", "--backend-name", "verilator"), () => new PE) {
     c => new PEUnitTester(c)
   }
 }
 
 object PEMain2 extends App {
-  iotesters.Driver.execute(Array("--backend-name", "verilator"), () => new PE) {
+  iotesters.Driver.execute(Array("--no-check-comb-loops", "--backend-name", "verilator"), () => new PE) {
     c => new PEUnitTester2(c)
   }
 }
